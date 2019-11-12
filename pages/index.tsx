@@ -14,6 +14,7 @@ const Home = () => {
   const { error, loading, data } = useQuery(HELLO_QUERY);
 
   if (loading) return null;
+  if (error) return null;
   console.log(data);
 
   return (

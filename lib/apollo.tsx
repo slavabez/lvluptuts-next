@@ -1,18 +1,26 @@
-import ApolloClient from "apollo-boost";
+import ApolloClient, { PresetConfig } from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import fetch from "isomorphic-unfetch";
 import * as React from "react";
-import {NextComponentType, NextPageContext} from "next";
+import { NextPageContext } from "next";
+import Head from "next/head";
+import { InMemoryCache } from "apollo-cache-inmemory";
 
 interface CustomContext extends NextPageContext {
   apolloClient?: any;
 }
 
-export function withApollo(PageComponent): NextComponentType {
-  const WithApollo = props => {
+interface CustomConfig extends PresetConfig {
+  ssrMode?: boolean;
+}
+
+export function withApollo(PageComponent): any {
+  const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
+    const client = apolloClient || initApolloClient(apolloState);
+
     return (
-      <ApolloProvider client={initApolloClient()}>
-        <PageComponent {...props} />
+      <ApolloProvider client={client}>
+        <PageComponent {...pageProps} />
       </ApolloProvider>
     );
   };
@@ -26,27 +34,47 @@ export function withApollo(PageComponent): NextComponentType {
       pageProps = await PageComponent.getInitialProps(context);
     }
 
-    if (typeof window === `undefined`){
-      // Not in a browser
-      if (context.res && context.res.finished){
+    if (typeof window === `undefined`) {
+      // Not in a browser, server side
+      if (context.res && context.res.finished) {
         return pageProps;
       }
 
       try {
         const { getDataFromTree } = await import("@apollo/react-ssr");
-        await getDataFromTree(<AppTree pageProps={pageProps} />);
+        await getDataFromTree(
+          <AppTree
+            pageProps={{
+              ...pageProps,
+              apolloClient
+            }}
+          />
+        );
       } catch (e) {
-
+        console.error(e);
       }
+
+      Head.rewind();
     }
+    const apolloState = apolloClient.cache.extract();
+    return {
+      ...pageProps,
+      apolloState
+    };
   };
 
   return WithApollo;
 }
 
-const initApolloClient = () => {
-  return new ApolloClient({
+const initApolloClient = (initialState = {}) => {
+  const ssrMode = typeof window === `undefined`;
+  const cache = new InMemoryCache().restore(initialState);
+  const config: CustomConfig = {
+    ssrMode,
     uri: `http://localhost:3000/api/graphql`,
-    fetch
-  });
+    fetch,
+    cache
+  };
+
+  return new ApolloClient(config);
 };
