@@ -5,8 +5,16 @@ import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
 const HELLO_QUERY = gql`
-  query {
-    sayHello
+  {
+    reddit {
+      subreddit(name: "thinkpad") {
+        subscribers
+        topListings (limit: 5) {
+          title
+          url
+        }
+      }
+    }
   }
 `;
 
