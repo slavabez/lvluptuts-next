@@ -71,7 +71,7 @@ const initApolloClient = (initialState = {}) => {
   const cache = new InMemoryCache().restore(initialState);
   const config: CustomConfig = {
     ssrMode,
-    uri: `https://www.graphqlhub.com/graphql`,
+    uri: `http://localhost:3000/api/graphql`,
     fetch,
     cache
   };
