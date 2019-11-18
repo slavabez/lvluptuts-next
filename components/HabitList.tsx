@@ -10,7 +10,7 @@ const HabitList = (props: HabitListProps) => {
     <section>
       <h2>My Habits</h2>
       {props.habits.map((h, index) => (
-        <Habit key={h} habit={h} index={index} />
+        <Habit key={h + "-" + index} habit={h} index={index} />
       ))}
     </section>
   );

@@ -16,6 +16,24 @@ const HabitButton = (props: HabitButtonProps) => {
       >
         {complete ? "X" : "O"}
       </button>
+      <style jsx>
+        {`
+          span {
+            display: flex;
+            flex-direction: column;
+          }
+
+          span + span {
+            margin-left: 20px;
+          }
+          
+          button {
+            border: none;
+            margin-top: 1rem;
+            background-color: transparent;
+          }
+        `}
+      </style>
     </span>
   );
 };

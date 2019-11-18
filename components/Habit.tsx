@@ -6,22 +6,35 @@ interface HabitProps {
   index: number;
 }
 
+const colors = [`#718096`, `#F56565`, `#F6E05E`, `#68D391`, `#63B3Ed`];
+
 const Habit = (props: HabitProps) => {
   const dates = get5LastDays();
-  const color = `#718096`;
   return (
     <article>
       <h3>{props.habit}</h3>
-      <div>
+      <div className="buttons">
         {dates.map(date => (
           <HabitButton key={date.getUTCDate()} date={date} />
         ))}
       </div>
-      <style jsx>{`
-        h3 {
-          border-bottom: solid 4px ${color};
-        }
-      `}
+      <style jsx>
+        {`
+          h3 {
+            border-bottom: solid 4px ${colors[props.index % colors.length]};
+            margin-top: 0;
+          }
+
+          article {
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.15);
+          }
+
+          .buttons {
+            display: flex;
+          }
+        `}
       </style>
     </article>
   );
