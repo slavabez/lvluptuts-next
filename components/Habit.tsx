@@ -3,11 +3,12 @@ import HabitButton from "./HabitButton";
 
 interface HabitProps {
   habit: string;
+  index: number;
 }
 
 const Habit = (props: HabitProps) => {
   const dates = get5LastDays();
-  console.log(dates);
+  const color = `#718096`;
   return (
     <article>
       <h3>{props.habit}</h3>
@@ -16,6 +17,12 @@ const Habit = (props: HabitProps) => {
           <HabitButton key={date.getUTCDate()} date={date} />
         ))}
       </div>
+      <style jsx>{`
+        h3 {
+          border-bottom: solid 4px ${color};
+        }
+      `}
+      </style>
     </article>
   );
 };

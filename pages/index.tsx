@@ -7,19 +7,8 @@ import gql from "graphql-tag";
 import HabitForm from "../components/HabitForm";
 import HabitList from "../components/HabitList";
 
-const HELLO_QUERY = gql`
-  {
-    sayHello
-  }
-`;
-
 const Home = () => {
-  const { error, loading, data } = useQuery(HELLO_QUERY);
   const [habits, setHabits] = useState([`Do the dishes`]);
-
-  if (loading) return null;
-  if (error) return null;
-  console.log(data);
 
   return (
     <Layout>
