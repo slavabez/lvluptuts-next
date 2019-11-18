@@ -1,13 +1,22 @@
 import React from "react";
-import Habit from "./Habit";
+import { Field, Form } from "@leveluptuts/fresh";
 
-const HabitList = () => {
-  return <section>
-    <h2>My Habits</h2>
-    <Habit />
-    <Habit />
-    <Habit />
-  </section>
+interface HabitFormProps {
+  setHabits: (any) => void;
+}
+
+const HabitForm = (props: HabitFormProps) => {
+  return (
+    // @ts-ignore
+    <Form
+      onSubmit={data => {
+        console.log(data);
+        props.setHabits(prevState => [...prevState, data.habit]);
+      }}
+    >
+      <Field>Habit</Field>
+    </Form>
+  );
 };
 
-export default HabitList;
+export default HabitForm;

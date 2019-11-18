@@ -67,10 +67,8 @@ export function withApollo(PageComponent): any {
 }
 
 const initApolloClient = (initialState = {}) => {
-  const ssrMode = typeof window === `undefined`;
   const cache = new InMemoryCache().restore(initialState);
   const config: CustomConfig = {
-    ssrMode,
     uri: `http://localhost:3000/api/graphql`,
     fetch,
     cache
