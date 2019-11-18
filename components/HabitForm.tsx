@@ -10,7 +10,6 @@ const HabitForm = (props: HabitFormProps) => {
     // @ts-ignore
     <Form
       onSubmit={data => {
-        console.log(data);
         props.setHabits(prevState => [...prevState, data.habit]);
       }}
     >

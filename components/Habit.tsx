@@ -27,6 +27,7 @@ const Habit = (props: HabitProps) => {
 
           article {
             padding: 20px;
+            margin-bottom: 10px;
             border-radius: 15px;
             box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.15);
           }
